@@ -16,7 +16,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"magento2go/models"
+	"github.com/localrivet/magento2go/models"
 )
 
 // QuoteGuestBillingAddressManagementV1AssignPostReader is a Reader for the QuoteGuestBillingAddressManagementV1AssignPost structure.

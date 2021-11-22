@@ -80,6 +80,97 @@ Generate the Api client using swagger
 swagger generate client -f magento.schema.json -a magento2go --default-consumes application/json
 ```
 
+## Usage
+
+```sh
+var err error
+var client *client.MagentoCommunity
+
+// create the client
+client, err := NewClient(&struct {
+    accessToken string
+    host        string
+    path        string
+    scheme      string
+    debug       bool
+}{
+    accessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
+    host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
+    path:        "/rest/default",
+    scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
+    debug:       false,
+})
+
+if err != nil {
+    fmt.Print(err)
+}
+
+// create the api
+// timeout in seconds
+var timeout int64 = 300 
+api = NewMagentoApi(client, timeout)
+
+// get product by sku
+var product *models.CatalogDataProductInterface
+product, err = api.Product.GetProductBySku("valid-sku")
+if err != nil {
+    fmt.Print(err)
+}
+
+// do something with product
+// Attribute set id
+product.AttributeSetID // int64 
+
+// Created date
+product.CreatedAt // string 
+
+// Custom attributes values.
+product.CustomAttributes // []*FrameworkAttributeInterface 
+
+// extension attributes
+product.ExtensionAttributes // *CatalogDataProductExtensionInterface 
+
+// Id
+product.ID // int64
+
+// Media gallery entries
+product.MediaGalleryEntries // []*CatalogDataProductAttributeMediaGalleryEntryInterface 
+
+// Name
+product.Name // string
+
+// List of product options
+product.Options // []*CatalogDataProductCustomOptionInterface 
+
+// Price
+product.Price // float64 
+
+// Product links info
+product.ProductLinks // []*CatalogDataProductLinkInterface
+
+// Sku
+// Required: true
+product.Sku // *string 
+
+// Status
+product.Status // int64 
+
+// List of product tier prices
+product.TierPrices // []*CatalogDataProductTierPriceInterface 
+
+// Type id
+product.TypeID // string
+
+// Updated date
+product.UpdatedAt // string
+
+// Visibility
+product.Visibility // int64 
+
+// Weight
+product.Weight // float64
+```
+
 ## Api Methods Planned
 
 ### Products

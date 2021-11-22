@@ -15,7 +15,7 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"magento2go/models"
+	"github.com/localrivet/magento2go/models"
 )
 
 // QuoteGuestCartManagementV1PlaceOrderPutReader is a Reader for the QuoteGuestCartManagementV1PlaceOrderPut structure.

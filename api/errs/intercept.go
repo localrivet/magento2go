@@ -2,7 +2,8 @@ package errs
 
 import (
 	"errors"
-	"magento2go/client/catalog_product_repository_v1"
+
+	"github.com/localrivet/magento2go/client/catalog_product_repository_v1"
 )
 
 func InterceptError(err error) error {

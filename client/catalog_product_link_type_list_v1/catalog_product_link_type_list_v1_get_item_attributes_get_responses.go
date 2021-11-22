@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
-	"magento2go/models"
+	"github.com/localrivet/magento2go/models"
 )
 
 // CatalogProductLinkTypeListV1GetItemAttributesGetReader is a Reader for the CatalogProductLinkTypeListV1GetItemAttributesGet structure.

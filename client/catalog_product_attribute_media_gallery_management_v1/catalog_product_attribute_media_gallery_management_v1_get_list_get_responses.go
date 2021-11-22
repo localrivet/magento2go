@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
-	"magento2go/models"
+	"github.com/localrivet/magento2go/models"
 )
 
 // CatalogProductAttributeMediaGalleryManagementV1GetListGetReader is a Reader for the CatalogProductAttributeMediaGalleryManagementV1GetListGet structure.

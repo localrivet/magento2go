@@ -1,24 +1,25 @@
 package product
 
 import (
-	"magento2go/api/errs"
-	"magento2go/client"
-	"magento2go/client/catalog_product_repository_v1"
-	"magento2go/models"
 	"time"
+
+	"github.com/localrivet/magento2go/api/errs"
+	"github.com/localrivet/magento2go/client"
+	"github.com/localrivet/magento2go/client/catalog_product_repository_v1"
+	"github.com/localrivet/magento2go/models"
 )
+
+// NewProductApi
+func NewProductApi(mc *client.MagentoCommunity, timeout time.Duration) *ProductApi {
+	return &ProductApi{
+		client:  mc,
+		timeout: timeout,
+	}
+}
 
 type ProductApi struct {
 	client  *client.MagentoCommunity
 	timeout time.Duration
-}
-
-// NewProductApi
-func NewProductApi(client *client.MagentoCommunity, timeout time.Duration) *ProductApi {
-	return &ProductApi{
-		client,
-		timeout,
-	}
 }
 
 // GetProductBySku
@@ -30,6 +31,7 @@ func (a *ProductApi) GetProductBySku(sku string) (*models.CatalogDataProductInte
 	if err != nil {
 		return nil, errs.InterceptError(err)
 	}
+
 	return result.Payload, err
 }
 

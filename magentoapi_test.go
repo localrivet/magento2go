@@ -1,15 +1,22 @@
-package magento2go
+package magento2go_test
 
 import (
-	"magento2go/client"
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/localrivet/magento2go"
+	"github.com/localrivet/magento2go/client"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("MagentoApi", func() {
+
+	validSku := "valid-sku"
+	invalidSku := "invalid-sku"
+
+	config := &magento2go.Config{}
+	config.Debug = false
 
 	var timeout int64 = 300
 
@@ -18,14 +25,8 @@ var _ = Describe("MagentoApi", func() {
 		Expect(err).To(BeNil())
 	}
 
-	expectNilErr := func(c *struct {
-		accessToken string
-		host        string
-		path        string
-		scheme      string
-		debug       bool
-	}) {
-		_, err := NewClient(c)
+	expectNilErr := func(c *magento2go.Config) {
+		_, err := magento2go.NewClient(c)
 		Expect(err).To(BeNil())
 	}
 
@@ -35,67 +36,54 @@ var _ = Describe("MagentoApi", func() {
 
 	Describe("Connection", func() {
 		It("should return valid connection", func() {
-			expectNilErr(&struct {
-				accessToken string
-				host        string
-				path        string
-				scheme      string
-				debug       bool
-			}{
-				accessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
-				host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
-				path:        "/rest/default",
-				scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
-				debug:       false,
-			})
+			config = &magento2go.Config{
+				AccessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
+				Host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
+				Path:        "/rest/default",
+				Scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
+				Debug:       false,
+			}
+			expectNilErr(config)
 		})
 	})
 
 	Describe("Api", func() {
 
 		var mc *client.MagentoCommunity
-		var api *magentoApi
+		var api *magento2go.MagentoApi
+		config = &magento2go.Config{
+			AccessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
+			Host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
+			Path:        "/rest/default",
+			Scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
+			Debug:       false,
+		}
 
 		BeforeEach(func() {
-			mc, _ = NewClient(&struct {
-				accessToken string
-				host        string
-				path        string
-				scheme      string
-				debug       bool
-			}{
-				accessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
-				host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
-				path:        "/rest/default",
-				scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
-				debug:       false,
-			})
+			mc, _ = magento2go.NewClient(config)
 		})
 
 		It("should return a valid MagentoApi", func() {
-			api = NewMagentoApi(mc, timeout)
+			api = magento2go.NewMagentoApi(mc, timeout)
 			Expect(api).To(Not(BeNil()))
 		})
 
 		Describe("GetProductBySku", func() {
 			BeforeEach(func() {
-				api = NewMagentoApi(mc, timeout)
+				api = magento2go.NewMagentoApi(mc, timeout)
 			})
 
-			It("should return an error", func() {
-				invalidSku := "yo-this-is-invalid"
-				_, err := api.Product.GetProductBySku(invalidSku)
+			FIt("should return an error", func() {
+				_, err := api.GetProductBySku(invalidSku)
 				Expect(err).To(Not(BeNil()))
 				Expect(err.Error()).Should(ContainSubstring("The product that was requested doesn't exist. Verify the product and try again."))
-
 			})
 
 			It("should return a valid product by sku", func() {
-				testSku := "bee-pure-gut-health"
-				product, err := api.Product.GetProductBySku(testSku)
+				product, err := api.GetProductBySku(validSku)
 				Expect(err).To(BeNil())
 				Expect(product).To(Not(BeNil()))
-				Expect(*product.Sku).To(BeIdenticalTo(testSku))
+				Expect(*product.Sku).To(BeIdenticalTo(validSku))
 			})
 		})
 
@@ -104,20 +92,20 @@ var _ = Describe("MagentoApi", func() {
 			var pageSize int64 = 300
 
 			BeforeEach(func() {
-				api = NewMagentoApi(mc, timeout)
+				api = magento2go.NewMagentoApi(mc, timeout)
 			})
 
 			It("should return an error", func() {
 				currentPage = 0 // doesn't seem to throw any error
 				pageSize = 301  // too many, the max is 300
-				_, err := api.Product.GetAllProducts(currentPage, pageSize)
+				_, err := api.GetAllProducts(currentPage, pageSize)
 				Expect(err).To(Not(BeNil()))
 				Expect(err.Error()).Should(ContainSubstring("Maximum SearchCriteria pageSize is 300"))
 			})
 
 			It("should return a valid product by sku", func() {
 				testSku := "bee-pure-gut-health"
-				product, err := api.Product.GetProductBySku(testSku)
+				product, err := api.GetProductBySku(testSku)
 				Expect(err).To(BeNil())
 				Expect(product).To(Not(BeNil()))
 				Expect(*product.Sku).To(BeIdenticalTo(testSku))

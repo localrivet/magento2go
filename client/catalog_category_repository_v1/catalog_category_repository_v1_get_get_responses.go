@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
-	"magento2go/models"
+	"github.com/localrivet/magento2go/models"
 )
 
 // CatalogCategoryRepositoryV1GetGetReader is a Reader for the CatalogCategoryRepositoryV1GetGet structure.

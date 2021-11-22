@@ -12,7 +12,7 @@ import (
 	"github.com/go-openapi/runtime"
 	"github.com/go-openapi/strfmt"
 
-	"magento2go/models"
+	"github.com/localrivet/magento2go/models"
 )
 
 // CatalogProductLinkManagementV1GetLinkedItemsByTypeGetReader is a Reader for the CatalogProductLinkManagementV1GetLinkedItemsByTypeGet structure.

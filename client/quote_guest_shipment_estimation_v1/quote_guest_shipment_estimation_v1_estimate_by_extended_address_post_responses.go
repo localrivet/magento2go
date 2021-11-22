@@ -16,7 +16,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"magento2go/models"
+	"github.com/localrivet/magento2go/models"
 )
 
 // QuoteGuestShipmentEstimationV1EstimateByExtendedAddressPostReader is a Reader for the QuoteGuestShipmentEstimationV1EstimateByExtendedAddressPost structure.

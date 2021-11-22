@@ -6,9 +6,10 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
-	"magento2go/client"
-	"magento2go/utils"
 	"strings"
+
+	"github.com/localrivet/magento2go/client"
+	"github.com/localrivet/magento2go/utils"
 
 	httptransport "github.com/go-openapi/runtime/client"
 
@@ -16,36 +17,34 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-func NewClient(config *struct {
-	accessToken string
-	host        string
-	path        string
-	scheme      string
-	debug       bool
-}) (*client.MagentoCommunity, error) {
+func NewClient(config *Config) (*client.MagentoCommunity, error) {
 	if config == nil {
 		return nil, errors.New("config cannot be empty")
 	}
 
-	if config.accessToken == "" {
+	if config.AccessToken == "" {
 		return nil, errors.New("accessToken cannot be empty")
 	}
-	if config.host == "" {
+	if config.Host == "" {
 		return nil, errors.New("host cannot be empty")
 	}
-	if config.path == "" {
+	if config.Path == "" {
 		return nil, errors.New("path cannot be empty")
 	}
-	if config.scheme == "" {
+	if config.Scheme == "" {
 		return nil, errors.New("scheme cannot be empty")
 	}
 
 	// // create the API client
-	transport := httptransport.New(config.host, config.path, []string{config.scheme})
+	transport := httptransport.New(config.Host, config.Path, []string{config.Scheme})
 
 	// intercept the application/json consumer and fix the overloaded "value":string|[]string issue
 	transport.Consumers[runtime.JSONMime] = runtime.ConsumerFunc(func(reader io.Reader, v interface{}) error {
 		buf, _ := ioutil.ReadAll(reader)
+
+		fmt.Println(strings.Repeat("-", 24))
+		fmt.Println(string(buf))
+		fmt.Println(strings.Repeat("-", 24))
 
 		// we need to fix the json response before marshalling it
 		// into a struct of the expected type
@@ -62,18 +61,18 @@ func NewClient(config *struct {
 
 	// set the bearer authorization header
 	transport.DefaultAuthentication = runtime.ClientAuthInfoWriterFunc(func(req runtime.ClientRequest, _ strfmt.Registry) error {
-		return req.SetHeaderParam("Authorization", fmt.Sprintf("Bearer %s", config.accessToken))
+		return req.SetHeaderParam("Authorization", fmt.Sprintf("Bearer %s", config.AccessToken))
 	})
 
 	// set debug status
-	transport.Debug = config.debug
+	transport.Debug = config.Debug
 
 	// create a new client
-	c := client.New(transport, strfmt.Default)
+	mc := client.New(transport, strfmt.Default)
 	var emptyClient *client.MagentoCommunity
-	if c == emptyClient {
+	if mc == emptyClient {
 		return nil, errors.New("client not created")
 	}
 
-	return c, nil
+	return mc, nil
 }

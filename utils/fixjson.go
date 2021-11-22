@@ -3,9 +3,10 @@ package utils
 import (
 	"encoding/json"
 	"fmt"
-	"magento2go/models"
 	"regexp"
 	"strings"
+
+	"github.com/localrivet/magento2go/models"
 )
 
 // FixJsonResponse

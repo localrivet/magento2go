@@ -16,7 +16,7 @@ import (
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 
-	"magento2go/models"
+	"github.com/localrivet/magento2go/models"
 )
 
 // CheckoutGuestTotalsInformationManagementV1CalculatePostReader is a Reader for the CheckoutGuestTotalsInformationManagementV1CalculatePost structure.

@@ -1,32 +1,24 @@
-package magento2go
+package magento2go_test
 
 import (
+	"github.com/localrivet/magento2go"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
 
 var _ = Describe("Client", func() {
 
-	expectErr := func(c *struct {
-		accessToken string
-		host        string
-		path        string
-		scheme      string
-		debug       bool
-	}, errSubstring string) {
-		_, err := NewClient(c)
+	config := &magento2go.Config{}
+	config.Debug = false
+
+	expectErr := func(c *magento2go.Config, errSubstring string) {
+		_, err := magento2go.NewClient(c)
 		Expect(err).NotTo(BeNil())
 		Expect(err.Error()).Should(ContainSubstring(errSubstring))
 	}
 
-	expectNilErr := func(c *struct {
-		accessToken string
-		host        string
-		path        string
-		scheme      string
-		debug       bool
-	}) {
-		_, err := NewClient(c)
+	expectNilErr := func(c *magento2go.Config) {
+		_, err := magento2go.NewClient(c)
 		Expect(err).To(BeNil())
 	}
 
@@ -37,102 +29,36 @@ var _ = Describe("Client", func() {
 		})
 
 		It("should return error if empty config accessToken", func() {
-			expectErr(&struct {
-				accessToken string
-				host        string
-				path        string
-				scheme      string
-				debug       bool
-			}{
-				accessToken: "",
-				host:        "",
-				path:        "",
-				scheme:      "",
-				debug:       false,
-			}, "accessToken cannot be empty")
+			config.Debug = false
+			expectErr(config, "accessToken cannot be empty")
 		})
 
 		It("should return error if empty config host", func() {
-			expectErr(&struct {
-				accessToken string
-				host        string
-				path        string
-				scheme      string
-				debug       bool
-			}{
-				accessToken: "test",
-				host:        "",
-				path:        "",
-				scheme:      "",
-				debug:       false,
-			}, "host cannot be empty")
+			config.AccessToken = "test"
+			expectErr(config, "host cannot be empty")
 		})
 
 		It("should return error if empty config path", func() {
-			expectErr(&struct {
-				accessToken string
-				host        string
-				path        string
-				scheme      string
-				debug       bool
-			}{
-				accessToken: "test",
-				host:        "test",
-				path:        "",
-				scheme:      "",
-				debug:       false,
-			}, "path cannot be empty")
+			config.AccessToken = "test"
+			config.Host = "test"
+			expectErr(config, "path cannot be empty")
 		})
 
 		It("should return error if empty config scheme", func() {
-			expectErr(&struct {
-				accessToken string
-				host        string
-				path        string
-				scheme      string
-				debug       bool
-			}{
-				accessToken: "test",
-				host:        "test",
-				path:        "test",
-				scheme:      "",
-				debug:       false,
-			}, "scheme cannot be empty")
+			config.AccessToken = "test"
+			config.Host = "test"
+			config.Path = "test"
+			expectErr(config, "scheme cannot be empty")
 		})
 
 		It("should not error if filled config", func() {
-			expectNilErr(&struct {
-				accessToken string
-				host        string
-				path        string
-				scheme      string
-				debug       bool
-			}{
-				accessToken: "test",
-				host:        "test",
-				path:        "test",
-				scheme:      "https",
-				debug:       false,
-			})
+			config.AccessToken = "test"
+			config.Host = "test"
+			config.Path = "test"
+			config.Scheme = "https"
+			config.Debug = false
+			expectNilErr(config)
 		})
 
-	})
-
-	Describe("Runtime Client", func() {
-		It("should not error if filled config", func() {
-			expectNilErr(&struct {
-				accessToken string
-				host        string
-				path        string
-				scheme      string
-				debug       bool
-			}{
-				accessToken: "test",
-				host:        "test",
-				path:        "test",
-				scheme:      "https",
-				debug:       false,
-			})
-		})
 	})
 })

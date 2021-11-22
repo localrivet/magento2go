@@ -1,30 +1,30 @@
 package magento2go
 
 import (
-	"magento2go/api/product"
-	"magento2go/client"
-	"magento2go/models"
 	"math/rand"
 	"time"
+
+	"github.com/localrivet/magento2go/api/product"
+	"github.com/localrivet/magento2go/client"
+	"github.com/localrivet/magento2go/models"
 )
 
-func NewMagentoApi(client *client.MagentoCommunity, timeout int64) *magentoApi {
+func NewMagentoApi(mc *client.MagentoCommunity, timeout int64) *MagentoApi {
 	to := time.Duration(rand.Int63n(timeout)) * time.Second
-	return &magentoApi{
-		client,
-		product.NewProductApi(client, to),
+
+	return &MagentoApi{
+		product: product.NewProductApi(mc, to),
 	}
 }
 
-type magentoApi struct {
-	client  *client.MagentoCommunity
-	Product *product.ProductApi
+type MagentoApi struct {
+	product *product.ProductApi
 }
 
-func (a *magentoApi) GetAllProducts(currentPage, pageSize int64) ([]*models.CatalogDataProductInterface, error) {
-	return a.Product.GetAllProducts(currentPage, pageSize)
+func (a *MagentoApi) GetAllProducts(currentPage, pageSize int64) ([]*models.CatalogDataProductInterface, error) {
+	return a.product.GetAllProducts(currentPage, pageSize)
 }
 
-func (a *magentoApi) GetProductBySku(sku string) (*models.CatalogDataProductInterface, error) {
-	return a.Product.GetProductBySku(sku)
+func (a *MagentoApi) GetProductBySku(sku string) (*models.CatalogDataProductInterface, error) {
+	return a.product.GetProductBySku(sku)
 }
