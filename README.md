@@ -68,7 +68,6 @@ He's done a fantastic job of putting this together and it makes running a local 
     ```sh
     MAGENTO_STORE_SCHEME=https
     MAGENTO_STORE_HOSTNAME=magento.test
-    MAGENTO_STORE_CODE=default
     MAGENTO_ACCESS_TOKEN=<put your Magentos access token here>
     ```
 
@@ -110,7 +109,7 @@ func init() {
 		Scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
 		Debug:       false,
 	}
-    
+
 	// create the client
 	client, err := magento2go.NewCommunityClient(config)
 
