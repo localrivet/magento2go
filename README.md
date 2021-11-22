@@ -82,93 +82,59 @@ swagger generate client -f magento.schema.json -a magento2go --default-consumes 
 
 ## Usage
 
+
 ```sh
-var err error
-var client *client.MagentoCommunity
+import (
+	"fmt"
+	"os"
 
-// create the client
-client, err := NewClient(&struct {
-    accessToken string
-    host        string
-    path        string
-    scheme      string
-    debug       bool
-}{
-    accessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
-    host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
-    path:        "/rest/default",
-    scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
-    debug:       false,
-})
+	"github.com/joho/godotenv"
+	"github.com/localrivet/magento2go"
+)
 
-if err != nil {
-    fmt.Print(err)
+var (
+	api *magento2go.MagentoApi
+)
+
+func init() {
+
+	err := godotenv.Load()
+	if err != nil {
+		fmt.Errorf("Error loading .env file: %s", err)
+	}
+
+	config := magento2go.Config{
+		AccessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
+		Host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
+		Path:        "/rest/default",
+		Scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
+		Debug:       false,
+	}
+	// create the client
+	client, err := magento2go.NewCommunityClient(config)
+
+	if err != nil {
+		fmt.Print(err)
+	}
+
+	// create the api
+	// timeout in seconds
+	var timeout int64 = 300
+	api = magento2go.NewMagentoApi(client, timeout)
+
+	loadProducts()
 }
 
-// create the api
-// timeout in seconds
-var timeout int64 = 300 
-api = NewMagentoApi(client, timeout)
+func loadProducts() {
+	products, err := api.GetAllProducts(0, 300)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-// get product by sku
-var product *models.CatalogDataProductInterface
-product, err = api.Product.GetProductBySku("valid-sku")
-if err != nil {
-    fmt.Print(err)
+	for _, product := range products {
+		fmt.Println(product.Name)
+	}
 }
-
-// do something with product
-// Attribute set id
-product.AttributeSetID // int64 
-
-// Created date
-product.CreatedAt // string 
-
-// Custom attributes values.
-product.CustomAttributes // []*FrameworkAttributeInterface 
-
-// extension attributes
-product.ExtensionAttributes // *CatalogDataProductExtensionInterface 
-
-// Id
-product.ID // int64
-
-// Media gallery entries
-product.MediaGalleryEntries // []*CatalogDataProductAttributeMediaGalleryEntryInterface 
-
-// Name
-product.Name // string
-
-// List of product options
-product.Options // []*CatalogDataProductCustomOptionInterface 
-
-// Price
-product.Price // float64 
-
-// Product links info
-product.ProductLinks // []*CatalogDataProductLinkInterface
-
-// Sku
-// Required: true
-product.Sku // *string 
-
-// Status
-product.Status // int64 
-
-// List of product tier prices
-product.TierPrices // []*CatalogDataProductTierPriceInterface 
-
-// Type id
-product.TypeID // string
-
-// Updated date
-product.UpdatedAt // string
-
-// Visibility
-product.Visibility // int64 
-
-// Weight
-product.Weight // float64
 ```
 
 ## Api Methods Planned
