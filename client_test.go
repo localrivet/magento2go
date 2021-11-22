@@ -8,24 +8,24 @@ import (
 
 var _ = Describe("Client", func() {
 
-	config := &magento2go.Config{}
+	config := magento2go.Config{}
 	config.Debug = false
 
-	expectErr := func(c *magento2go.Config, errSubstring string) {
-		_, err := magento2go.NewClient(c)
+	expectErr := func(c magento2go.Config, errSubstring string) {
+		_, err := magento2go.NewCommunityClient(c)
 		Expect(err).NotTo(BeNil())
 		Expect(err.Error()).Should(ContainSubstring(errSubstring))
 	}
 
-	expectNilErr := func(c *magento2go.Config) {
-		_, err := magento2go.NewClient(c)
+	expectNilErr := func(c magento2go.Config) {
+		_, err := magento2go.NewCommunityClient(c)
 		Expect(err).To(BeNil())
 	}
 
 	Describe("Config Params", func() {
 
 		It("should return error if empty config", func() {
-			expectErr(nil, "config cannot be empty")
+			expectErr((magento2go.Config{}), "config cannot be empty")
 		})
 
 		It("should return error if empty config accessToken", func() {

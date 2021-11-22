@@ -17,8 +17,8 @@ import (
 	"github.com/go-openapi/strfmt"
 )
 
-func NewClient(config *Config) (*client.MagentoCommunity, error) {
-	if config == nil {
+func NewCommunityClient(config Config) (*client.MagentoCommunity, error) {
+	if config == (Config{}) {
 		return nil, errors.New("config cannot be empty")
 	}
 
@@ -41,10 +41,6 @@ func NewClient(config *Config) (*client.MagentoCommunity, error) {
 	// intercept the application/json consumer and fix the overloaded "value":string|[]string issue
 	transport.Consumers[runtime.JSONMime] = runtime.ConsumerFunc(func(reader io.Reader, v interface{}) error {
 		buf, _ := ioutil.ReadAll(reader)
-
-		fmt.Println(strings.Repeat("-", 24))
-		fmt.Println(string(buf))
-		fmt.Println(strings.Repeat("-", 24))
 
 		// we need to fix the json response before marshalling it
 		// into a struct of the expected type

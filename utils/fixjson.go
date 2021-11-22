@@ -30,7 +30,6 @@ func FlattenValueArrays(body string) string {
 		toFix := reg.ReplaceAllString(match, "$1")
 		leftMostMatch := fmt.Sprintf(`"value":"%s"`, strings.ReplaceAll(toFix, `"`, ``))
 		body = reg.ReplaceAllString(string(body), leftMostMatch)
-		// fmt.Println("FixResonseJson: ", leftMostMatch)
 	}
 	return body
 }

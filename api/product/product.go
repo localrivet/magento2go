@@ -10,20 +10,25 @@ import (
 )
 
 // NewProductApi
-func NewProductApi(mc *client.MagentoCommunity, timeout time.Duration) *ProductApi {
-	return &ProductApi{
+func NewProductApi(mc *client.MagentoCommunity, timeout time.Duration) ProductApi {
+	return &productApi{
 		client:  mc,
 		timeout: timeout,
 	}
 }
 
-type ProductApi struct {
+type ProductApi interface {
+	GetProductBySku(sku string) (*models.CatalogDataProductInterface, error)
+	GetAllProducts(currentPage, pageSize int64) ([]*models.CatalogDataProductInterface, error)
+}
+
+type productApi struct {
 	client  *client.MagentoCommunity
 	timeout time.Duration
 }
 
 // GetProductBySku
-func (a *ProductApi) GetProductBySku(sku string) (*models.CatalogDataProductInterface, error) {
+func (a *productApi) GetProductBySku(sku string) (*models.CatalogDataProductInterface, error) {
 	params := catalog_product_repository_v1.NewCatalogProductRepositoryV1GetGetParams()
 	params.Sku = sku
 	params.SetTimeout(time.Second * 300)
@@ -36,7 +41,7 @@ func (a *ProductApi) GetProductBySku(sku string) (*models.CatalogDataProductInte
 }
 
 // GetAllProducts
-func (a *ProductApi) GetAllProducts(currentPage, pageSize int64) ([]*models.CatalogDataProductInterface, error) {
+func (a *productApi) GetAllProducts(currentPage, pageSize int64) ([]*models.CatalogDataProductInterface, error) {
 	params := catalog_product_repository_v1.NewCatalogProductRepositoryV1GetListGetParams()
 	params.SearchCriteriaPageSize = &pageSize
 	params.SearchCriteriaCurrentPage = &currentPage

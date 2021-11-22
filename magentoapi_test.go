@@ -12,11 +12,18 @@ import (
 
 var _ = Describe("MagentoApi", func() {
 
+	getConfig := func() magento2go.Config {
+		return magento2go.Config{
+			AccessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
+			Host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
+			Path:        "/rest/default",
+			Scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
+			Debug:       false,
+		}
+	}
+
 	validSku := "valid-sku"
 	invalidSku := "invalid-sku"
-
-	config := &magento2go.Config{}
-	config.Debug = false
 
 	var timeout int64 = 300
 
@@ -25,8 +32,8 @@ var _ = Describe("MagentoApi", func() {
 		Expect(err).To(BeNil())
 	}
 
-	expectNilErr := func(c *magento2go.Config) {
-		_, err := magento2go.NewClient(c)
+	expectNilErr := func(c magento2go.Config) {
+		_, err := magento2go.NewCommunityClient(c)
 		Expect(err).To(BeNil())
 	}
 
@@ -36,31 +43,18 @@ var _ = Describe("MagentoApi", func() {
 
 	Describe("Connection", func() {
 		It("should return valid connection", func() {
-			config = &magento2go.Config{
-				AccessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
-				Host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
-				Path:        "/rest/default",
-				Scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
-				Debug:       false,
-			}
-			expectNilErr(config)
+			expectNilErr(getConfig())
 		})
 	})
 
 	Describe("Api", func() {
-
 		var mc *client.MagentoCommunity
+		var err error
 		var api *magento2go.MagentoApi
-		config = &magento2go.Config{
-			AccessToken: os.Getenv("MAGENTO_ACCESS_TOKEN"),
-			Host:        os.Getenv("MAGENTO_STORE_HOSTNAME"),
-			Path:        "/rest/default",
-			Scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
-			Debug:       false,
-		}
 
 		BeforeEach(func() {
-			mc, _ = magento2go.NewClient(config)
+			mc, err = magento2go.NewCommunityClient(getConfig())
+			Expect(err).To(BeNil())
 		})
 
 		It("should return a valid MagentoApi", func() {
@@ -73,7 +67,7 @@ var _ = Describe("MagentoApi", func() {
 				api = magento2go.NewMagentoApi(mc, timeout)
 			})
 
-			FIt("should return an error", func() {
+			It("should return an error", func() {
 				_, err := api.GetProductBySku(invalidSku)
 				Expect(err).To(Not(BeNil()))
 				Expect(err.Error()).Should(ContainSubstring("The product that was requested doesn't exist. Verify the product and try again."))

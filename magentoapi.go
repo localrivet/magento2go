@@ -18,7 +18,7 @@ func NewMagentoApi(mc *client.MagentoCommunity, timeout int64) *MagentoApi {
 }
 
 type MagentoApi struct {
-	product *product.ProductApi
+	product product.ProductApi
 }
 
 func (a *MagentoApi) GetAllProducts(currentPage, pageSize int64) ([]*models.CatalogDataProductInterface, error) {
