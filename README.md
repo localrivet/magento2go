@@ -112,7 +112,6 @@ func init() {
 
 	// create the client
 	client, err := magento2go.NewCommunityClient(config)
-
 	if err != nil {
 		fmt.Print(err)
 	}
