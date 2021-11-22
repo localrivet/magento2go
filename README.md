@@ -3,13 +3,13 @@
 Connects go to a Magento Community REST API using swagger to generate the the go client and structs.
 
 ## Issue With Magento's API
----
+
 Magento's REST API has on major issue:
 
 *It doesn't actually follow it's own swagger documentation and requires `fixing` the raw json response string before marshalling it into a corresponding struct.* 
 
 ## Testing
----
+
 All tests are written using `ginkgo` 
 - https://github.com/onsi/ginkgo
 
@@ -72,7 +72,7 @@ He's done a fantastic job of putting this together and it makes running a local 
 
 
 ### Regenerating Swagger Client
----
+
 
 Generate the API client using swagger
 ```sh
