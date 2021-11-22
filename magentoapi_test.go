@@ -98,11 +98,12 @@ var _ = Describe("MagentoApi", func() {
 			})
 
 			It("should return a valid product by sku", func() {
-				testSku := "bee-pure-gut-health"
-				product, err := api.GetProductBySku(testSku)
+				currentPage = 0 // doesn't seem to throw any error
+				pageSize = 300  // too many, the max is 300
+				products, err := api.GetAllProducts(currentPage, pageSize)
 				Expect(err).To(BeNil())
-				Expect(product).To(Not(BeNil()))
-				Expect(*product.Sku).To(BeIdenticalTo(testSku))
+				Expect(products).To(Not(BeNil()))
+				// Expect(len(products).To(BeIdenticalTo(testSku))
 			})
 		})
 	})

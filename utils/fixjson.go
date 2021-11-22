@@ -31,6 +31,11 @@ func FlattenValueArrays(body string) string {
 		leftMostMatch := fmt.Sprintf(`"value":"%s"`, strings.ReplaceAll(toFix, `"`, ``))
 		body = reg.ReplaceAllString(string(body), leftMostMatch)
 	}
+
+	// final cleanup for all empty value arrays
+	// "value":[]
+	body = strings.ReplaceAll(string(body), `"value":[]`, `"value":""`)
+
 	return body
 }
 
