@@ -25,7 +25,7 @@ Due to Magento's Api issues mocking the Api using their own specs for testing is
 
 Testing requires a locally or remotely run Magento dev instance. These tests are ran again a locally run Magento docker instance.
 
-Here's how I am setup:
+## Local Setup
 
 
 1. **I recommend using [Mark Shust's Docker Configuration for Magento](https://github.com/markshust/docker-magento)**
