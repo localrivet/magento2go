@@ -1,7 +1,6 @@
 package magento2go
 
 import (
-	"math/rand"
 	"time"
 
 	"github.com/localrivet/magento2go/api/product"
@@ -10,7 +9,7 @@ import (
 )
 
 func NewMagentoApi(mc *client.MagentoCommunity, timeout int64) *MagentoApi {
-	to := time.Duration(rand.Int63n(timeout)) * time.Second
+	to := time.Duration(timeout) * time.Second
 
 	return &MagentoApi{
 		product: product.NewProductApi(mc, to),
