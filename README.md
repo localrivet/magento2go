@@ -4,7 +4,7 @@ Connects go to a Magento Community REST Api using swagger to generate the the go
 
 ## Issue With Magento's Api
 
-Magento's REST Api has on major issue:
+Magento's REST Api has one major issue:
 
 *It doesn't actually follow it's own swagger documentation and requires `fixing` the raw json response string before marshalling it into a corresponding struct.* 
 
