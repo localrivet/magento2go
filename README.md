@@ -121,11 +121,9 @@ func init() {
 	// timeout in seconds
 	var timeout int64 = 300
 	api = magento2go.NewMagentoApi(client, timeout)
-
-	loadProducts()
 }
 
-func loadProducts() {
+func main() {
 	products, err := api.GetAllProducts(0, 300)
 	if err != nil {
 		fmt.Println(err)
