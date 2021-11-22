@@ -110,6 +110,7 @@ func init() {
 		Scheme:      os.Getenv("MAGENTO_STORE_SCHEME"),
 		Debug:       false,
 	}
+    
 	// create the client
 	client, err := magento2go.NewCommunityClient(config)
 
