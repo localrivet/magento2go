@@ -1,0 +1,31 @@
+DEBUG:
+&client.Runtime{
+	DefaultMediaType:      "application/json",
+	DefaultAuthentication: (runtime.ClientAuthInfoWriterFunc)(0x146f0e0),
+	Consumers: map[string]runtime.Consumer{
+		"application/json":         (runtime.ConsumerFunc)(0x135b420),
+		"application/octet-stream": (runtime.ConsumerFunc)(0x1359380),
+		"application/x-yaml":       (runtime.ConsumerFunc)(0x13a1540),
+		"application/xml":          (runtime.ConsumerFunc)(0x135bec0),
+		"text/csv":                 (runtime.ConsumerFunc)(0x135ab40),
+		"text/html":                (runtime.ConsumerFunc)(0x135b5a0),
+		"text/plain":               (runtime.ConsumerFunc)(0x135b5a0)},
+	Producers: map[string]runtime.Producer{
+		"application/json":         (runtime.ProducerFunc)(0x135b4e0),
+		"application/octet-stream": (runtime.ProducerFunc)(0x1359ba0),
+		"application/x-yaml":       (runtime.ProducerFunc)(0x13a1740),
+		"application/xml":          (runtime.ProducerFunc)(0x135bf40),
+		"text/csv":                 (runtime.ProducerFunc)(0x135afa0),
+		"text/html":                (runtime.ProducerFunc)(0x135ba20),
+		"text/plain":               (runtime.ProducerFunc)(0x135ba20)},
+	Transport:  (*http.Transport)(0x19e0a40),
+	Jar:        http.CookieJar(nil),
+	Host:       "magento.test",
+	BasePath:   "/rest/default",
+	Formats:    strfmt.Registry(nil),
+	Context:    (*context.emptyCtx)(0xc000132008),
+	Debug:      true,
+	logger:     logger.StandardLogger{},
+	clientOnce: (*sync.Once)(0xc000390000),
+	client:     (*http.Client)(nil),
+	schemes:    []string{"https"}}
