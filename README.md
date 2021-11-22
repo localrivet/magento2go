@@ -1,10 +1,10 @@
 # Magento2Go
 
-Connects go to a Magento Community REST API using swagger to generate the the go client and structs.
+Connects go to a Magento Community REST Api using swagger to generate the the go client and structs.
 
-## Issue With Magento's API
+## Issue With Magento's Api
 
-Magento's REST API has on major issue:
+Magento's REST Api has on major issue:
 
 *It doesn't actually follow it's own swagger documentation and requires `fixing` the raw json response string before marshalling it into a corresponding struct.* 
 
@@ -17,9 +17,11 @@ Once your instance is up and running and you're ready to run the test run the fo
 
 ```sh
 ginkgo watch
+# or
+go test
 ```
 
-Due to Magento's API issues mocking the API using their own specs for testing is not recommended as it will not match the actual output of Magento's API. 
+Due to Magento's Api issues mocking the Api using their own specs for testing is not recommended as it will not match the actual output of Magento's Api. 
 
 Testing requires a locally or remotely run Magento dev instance. These tests are ran again a locally run Magento docker instance.
 
@@ -73,8 +75,18 @@ He's done a fantastic job of putting this together and it makes running a local 
 
 ### Regenerating Swagger Client
 
-
-Generate the API client using swagger
+Generate the Api client using swagger
 ```sh
 swagger generate client -f magento.schema.json -a magento2go --default-consumes application/json
 ```
+
+## Api Methods Planned
+
+### Products
+- [x] GetProductBySku
+- [x] GetAllProducts
+
+
+### Orders & more
+- Coming soon
+
