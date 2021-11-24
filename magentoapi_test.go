@@ -1,11 +1,13 @@
 package magento2go_test
 
 import (
+	"encoding/json"
 	"os"
 
 	"github.com/joho/godotenv"
 	"github.com/localrivet/magento2go"
 	"github.com/localrivet/magento2go/client"
+	"github.com/localrivet/magento2go/models"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -78,6 +80,20 @@ var _ = Describe("MagentoApi", func() {
 				Expect(err).To(BeNil())
 				Expect(product).To(Not(BeNil()))
 				Expect(*product.Sku).To(BeIdenticalTo(validSku))
+			})
+
+			It("should json.marshal and unmarshal without error", func() {
+				product, err := api.GetProductBySku(validSku)
+				Expect(err).To(BeNil())
+				Expect(product).To(Not(BeNil()))
+				Expect(*product.Sku).To(BeIdenticalTo(validSku))
+
+				b, err := json.Marshal(product)
+				Expect(err).To(BeNil())
+				toBecome := &models.CatalogDataProductInterface{}
+				err = json.Unmarshal(b, toBecome)
+				Expect(err).To(BeNil())
+				Expect(*toBecome.Sku).To(BeIdenticalTo(validSku))
 			})
 		})
 

@@ -9,7 +9,7 @@ import (
 var _ = Describe("Client", func() {
 
 	config := magento2go.Config{}
-	config.Debug = false
+	// config.Debug = false
 
 	expectErr := func(c magento2go.Config, errSubstring string) {
 		_, err := magento2go.NewCommunityClient(c)
@@ -29,7 +29,7 @@ var _ = Describe("Client", func() {
 		})
 
 		It("should return error if empty config accessToken", func() {
-			config.Debug = false
+			config.Debug = true
 			expectErr(config, "accessToken cannot be empty")
 		})
 

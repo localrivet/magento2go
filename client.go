@@ -21,7 +21,6 @@ func NewCommunityClient(config Config) (*client.MagentoCommunity, error) {
 	if config == (Config{}) {
 		return nil, errors.New("config cannot be empty")
 	}
-
 	if config.AccessToken == "" {
 		return nil, errors.New("accessToken cannot be empty")
 	}
